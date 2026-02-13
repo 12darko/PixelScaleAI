@@ -163,6 +163,12 @@ const App: React.FC = () => {
     setProcessedImage(null);
   };
 
+  const navigateTo = (path: string, state: AppState) => {
+    window.history.pushState({}, '', path);
+    setAppState(state);
+    window.scrollTo(0, 0);
+  };
+
   const handleFileSelect = async (file: File) => {
     // Check Credits
     let canProceed = false;
@@ -417,7 +423,7 @@ const App: React.FC = () => {
           {appState === AppState.PRIVACY && (
             <div className="w-full max-w-4xl mx-auto animate-fade-in">
               <button
-                onClick={() => setAppState(AppState.LANDING)}
+                onClick={() => navigateTo('/', AppState.LANDING)}
                 className="mb-6 text-purple-400 hover:text-purple-300 flex items-center gap-2"
               >
                 ← Ana Sayfaya Dön
@@ -430,7 +436,7 @@ const App: React.FC = () => {
           {appState === AppState.TERMS && (
             <div className="w-full max-w-4xl mx-auto animate-fade-in">
               <button
-                onClick={() => setAppState(AppState.LANDING)}
+                onClick={() => navigateTo('/', AppState.LANDING)}
                 className="mb-6 text-purple-400 hover:text-purple-300 flex items-center gap-2"
               >
                 ← Ana Sayfaya Dön
@@ -443,7 +449,7 @@ const App: React.FC = () => {
           {appState === AppState.CONTACT && (
             <div className="w-full max-w-4xl mx-auto animate-fade-in">
               <button
-                onClick={() => setAppState(AppState.LANDING)}
+                onClick={() => navigateTo('/', AppState.LANDING)}
                 className="mb-6 text-purple-400 hover:text-purple-300 flex items-center gap-2"
               >
                 ← Ana Sayfaya Dön
@@ -553,9 +559,9 @@ const App: React.FC = () => {
                 <p>&copy; {new Date().getFullYear()} Tüm hakları saklıdır.</p>
               </div>
               <div className="flex gap-6">
-                <button onClick={() => setAppState(AppState.PRIVACY)} className="hover:text-purple-400 transition-colors">Gizlilik Politikası</button>
-                <button onClick={() => setAppState(AppState.TERMS)} className="hover:text-purple-400 transition-colors">Kullanım Şartları</button>
-                <button onClick={() => setAppState(AppState.CONTACT)} className="hover:text-purple-400 transition-colors">İletişim</button>
+                <button onClick={() => navigateTo('/privacy', AppState.PRIVACY)} className="hover:text-purple-400 transition-colors">Gizlilik Politikası</button>
+                <button onClick={() => navigateTo('/terms', AppState.TERMS)} className="hover:text-purple-400 transition-colors">Kullanım Şartları</button>
+                <button onClick={() => navigateTo('/contact', AppState.CONTACT)} className="hover:text-purple-400 transition-colors">İletişim</button>
               </div>
             </div>
           </div>
