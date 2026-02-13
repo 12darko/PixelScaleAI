@@ -1,0 +1,38 @@
+================================================================================
+                        UPSCAVRA - PROJE NOTLARI
+                        Rafa Kaldırma: 10 Ocak 2026
+================================================================================
+
+SORUN:
+------
+Client-side AI (UpscalerJS + TensorFlow.js) çok yavaş.
+- 4K upscale: ~36 saniye
+- 16x upscale: Dakikalar sürüyor
+Tarayıcıda çalışan WebGL/WebGPU, gerçek GPU sunucularına kıyasla çok yavaş.
+
+YAPILAN İŞLER:
+--------------
+✓ Tam UI/UX (Yükleme, Karşılaştırma Slider, Premium Panel)
+✓ Client-Side AI entegrasyonu (UpscalerJS, Real-ESRGAN modelleri)
+✓ Tier sistemi (Free/Starter/Pro/Business)
+✓ Lemon Squeezy ödeme entegrasyonu (hazır)
+✓ Supabase Auth altyapısı
+✓ Dinamik etiketler, işlem süresi gösterimi
+✓ Responsive tasarım
+
+GELECEKTEKİ ÇÖZÜM:
+------------------
+Projeye dönmek için sunucu tabanlı GPU işleme gerekli:
+1. Replicate API (https://replicate.com) - Hazır Real-ESRGAN modelleri var
+2. RunPod (https://runpod.io) - Kendi GPU sunucun
+3. Modal (https://modal.com) - Serverless GPU
+
+Backend olarak Next.js API Routes veya Express kullanılabilir.
+
+DOSYALAR:
+---------
+- UI tamamen çalışır durumda
+- aiService.ts client-side mantık içeriyor, sunucuya geçişte değiştirilmeli
+- Tüm bileşenler ve stiller hazır
+
+================================================================================

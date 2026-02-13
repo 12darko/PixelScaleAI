@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  PixelScaleAI-backend:
+    build:
+      context: ./backend
+    container_name: PixelScaleAI-backend
+    ports:
+      - "8001:8001"
+    volumes:
+      # PERSIST THE MODELS!
+      - ./backend/weights:/app/weights
+      - ./backend/torch_cache:/root/.cache/torch
+    restart: always
+    environment:
+      - PORT=8001
+    command: uvicorn main:app --host 0.0.0.0 --port 8001
+  # Frontend is deployed separately on Node.js Hosting
+  # PixelScaleAI-frontend:
+  #   build:
+  #     context: .
+  #   container_name: PixelScaleAI-frontend
+  #   ports:
+  #     - "3001:80"
+  #   restart: always
+  #   environment:
+  #     - VITE_API_URL=https://api.PixelScaleAI.com
+
