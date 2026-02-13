@@ -1,4 +1,5 @@
 import os
+import sys
 import io
 import time
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form
@@ -6,6 +7,20 @@ from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import torch
+
+# --- MONKEY PATCH FIX FOR basicsr/torchvision Incompatibility ---
+# basicsr tries to import functional_tensor from torchvision.transforms, which was removed.
+# We map it to torchvision.transforms.functional instead.
+import torchvision.transforms.functional as F
+try:
+    from torchvision.transforms import functional_tensor
+except ImportError:
+    import types
+    functional_tensor = types.ModuleType("torchvision.transforms.functional_tensor")
+    functional_tensor.rgb_to_grayscale = F.rgb_to_grayscale
+    sys.modules["torchvision.transforms.functional_tensor"] = functional_tensor
+# ---------------------------------------------------------------
+
 from realesrgan import RealESRGANer
 from basicsr.archs.rrdbnet_arch import RRDBNet
 
