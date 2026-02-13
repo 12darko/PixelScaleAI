@@ -2,6 +2,8 @@ import os
 import sys
 import io
 import time
+import traceback
+import requests
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,6 +22,16 @@ except ImportError:
     functional_tensor.rgb_to_grayscale = F.rgb_to_grayscale
     sys.modules["torchvision.transforms.functional_tensor"] = functional_tensor
 # ---------------------------------------------------------------
+
+# --- MONKEY PATCH FIX FOR numpy/basicsr Incompatibility ---
+import numpy as np
+if not hasattr(np, 'float'):
+    np.float = float
+if not hasattr(np, 'int'):
+    np.int = int
+if not hasattr(np, 'bool'):
+    np.bool = bool
+# ----------------------------------------------------------
 
 from realesrgan import RealESRGANer
 from basicsr.archs.rrdbnet_arch import RRDBNet
@@ -46,18 +58,33 @@ def load_model():
 
     print(f"Loading Real-ESRGAN model on {device}...")
     try:
-        # Use RealESRGAN_x4plus model
-        model_path = os.path.join('weights', 'RealESRGAN_x4plus.pth')
-        
-        # Auto-download weights if missing (realesrgan package handles this usually, but we can be explicit)
-        # For now relying on library defaults or pre-downloaded weights
-        
+        # Ensure weights directory exists
+        weights_dir = 'weights'
+        os.makedirs(weights_dir, exist_ok=True)
+        model_path = os.path.join(weights_dir, 'RealESRGAN_x4plus.pth')
+
+        # Download if missing
+        if not os.path.exists(model_path):
+            print(f"Weights not found at {model_path}. Downloading...")
+            try:
+                url = 'https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth'
+                with requests.get(url, stream=True) as r:
+                    r.raise_for_status()
+                    with open(model_path, 'wb') as f:
+                        for chunk in r.iter_content(chunk_size=8192):
+                            f.write(chunk)
+                print("Weights downloaded successfully.")
+            except Exception as dl_err:
+                 print(f"Download failed: {dl_err}")
+                 # Fallback to let library try (it might fail if no internet/permissions)
+                 model_path = None
+
         # RealESRGAN_x4plus architecture
         experiment_model = RRDBNet(num_in_ch=3, num_out_ch=3, num_feat=64, num_block=23, num_grow_ch=32, scale=4)
         
         model = RealESRGANer(
             scale=4,
-            model_path=None, # None triggers download/cache check by library
+            model_path=model_path, 
             model=experiment_model,
             tile=0,  # 0 for auto-tile (saves VRAM)
             tile_pad=10,
@@ -69,6 +96,7 @@ def load_model():
         return model
     except Exception as e:
         print(f"Failed to load model: {e}")
+        traceback.print_exc()
         return None
 
 @app.on_event("startup")
