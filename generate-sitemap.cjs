@@ -4,12 +4,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const BASE_URL = 'https://upscavra.com';
+const BASE_URL = 'https://pixelscaleai.com';
 
 const pages = [
-    { url: '/', priority: '1.0', changefreq: 'daily' },
-    { url: '/privacy', priority: '0.3', changefreq: 'monthly' },
-    { url: '/terms', priority: '0.3', changefreq: 'monthly' },
+    { url: '/', priority: '1.0', changefreq: 'weekly' },
+    { url: '/privacy', priority: '0.3', changefreq: 'yearly' },
+    { url: '/terms', priority: '0.3', changefreq: 'yearly' },
+    { url: '/contact', priority: '0.5', changefreq: 'monthly' },
 ];
 
 function generateSitemap() {
