@@ -10,7 +10,7 @@ const steps = [
     {
         icon: <Layers className="w-8 h-8 text-blue-400" />,
         title: "2. Derin Öğrenme (AI)",
-        description: "Gelişmiş sinir ağları (Neural Networks), eksik pikselleri tahmin ederek görüntüyü yeniden oluşturur. Bu süreçte sadece boyut değil, doku ve detaylar da zenginleştirilir."
+        description: "Real-ESRGAN ve GAN (Generative Adversarial Networks) mimarisi kullanılarak, eksik pikseller akıllıca tahmin edilir. Bu süreçte sadece boyut değil, doku ve detaylar da zenginleştirilir."
     },
     {
         icon: <Sparkles className="w-8 h-8 text-pink-400" />,
