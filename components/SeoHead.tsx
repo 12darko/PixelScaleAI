@@ -53,6 +53,26 @@ const SeoHead: React.FC<SeoHeadProps> = ({
         }
     };
 
+    // Breadcrumb Schema
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Anasayfa",
+                "item": SITE_URL
+            },
+            ...(path !== '/' ? [{
+                "@type": "ListItem",
+                "position": 2,
+                "name": title || "Sayfa",
+                "item": canonicalUrl
+            }] : [])
+        ]
+    };
+
     // FAQ Schema
     let faqSchema = null;
     if (schemaType === 'FAQ' && faqData) {
@@ -81,6 +101,10 @@ const SeoHead: React.FC<SeoHeadProps> = ({
             {/* Structured Data (JSON-LD) */}
             <script type="application/ld+json">
                 {JSON.stringify(organizationSchema)}
+            </script>
+
+            <script type="application/ld+json">
+                {JSON.stringify(breadcrumbSchema)}
             </script>
 
             {schemaType === 'App' && (

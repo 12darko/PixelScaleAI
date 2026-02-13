@@ -142,6 +142,15 @@ const App: React.FC = () => {
     });
 
     return () => subscription.unsubscribe();
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Simple URL Routing for SEO (Handle /privacy, /terms on load)
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === '/privacy') setAppState(AppState.PRIVACY);
+    else if (path === '/terms') setAppState(AppState.TERMS);
+    else if (path === '/contact') setAppState(AppState.CONTACT);
   }, []);
 
   const handleLogout = async () => {
@@ -264,7 +273,16 @@ const App: React.FC = () => {
   return (
     <HelmetProvider>
       <div className="min-h-screen flex flex-col bg-gray-900 text-white font-sans selection:bg-purple-500 selection:text-white">
-        <SeoHead />
+        <SeoHead
+          title={appState === AppState.LANDING ? undefined :
+            appState === AppState.PRIVACY ? 'Gizlilik Politikası' :
+              appState === AppState.TERMS ? 'Kullanım Şartları' :
+                appState === AppState.CONTACT ? 'İletişim' : 'PixelScaleAI'}
+          path={appState === AppState.LANDING ? '/' :
+            appState === AppState.PRIVACY ? '/privacy' :
+              appState === AppState.TERMS ? '/terms' :
+                appState === AppState.CONTACT ? '/contact' : '/'}
+        />
         <Navbar
           user={user}
           guestCredits={guestCredits}

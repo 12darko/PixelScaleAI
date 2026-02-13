@@ -93,10 +93,11 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
                 {/* Processed Image (Background) */}
                 <img
                   src={isHolding ? originalUrl : processedUrl}
-                  alt="Result"
+                  alt="İşlenmiş Yüksek Çözünürlüklü Görsel (Sonra)"
                   className="block max-h-full max-w-full object-contain"
                   style={{ maxHeight: '280px' }} // Highly compacted fixed size
                   draggable={false}
+                  loading="lazy"
                 />
 
                 {!isHolding && (
@@ -113,9 +114,10 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
                     >
                       <img
                         src={originalUrl}
-                        alt="Before"
+                        alt="Orijinal Düşük Çözünürlüklü Görsel (Önce)"
                         className="w-full h-full object-cover"
                         draggable={false}
+                        loading="lazy"
                       />
                       {/* Label Before */}
                       <div className="absolute top-4 left-4 bg-black/60 backdrop-blur border border-white/10 text-white text-xs px-2 py-1 rounded">

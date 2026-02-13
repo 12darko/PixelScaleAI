@@ -138,7 +138,12 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelect, isProcessing }) =
                   validateAndProcess(file);
                 }}
               >
-                <img src={`https://picsum.photos/300/300?random=${i}`} alt="Sample" className="w-full h-full object-cover" />
+                <img
+                  src={`https://picsum.photos/300/300?random=${i}`}
+                  alt={`Örnek İyileştirme ${i + 1}`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
               </div>
             ))}
           </div>
