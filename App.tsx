@@ -16,6 +16,8 @@ import HistoryModal from './components/HistoryModal';
 import UpscaleOptionsPanel from './components/UpscaleOptionsPanel';
 import SeoHead from './components/SeoHead';
 import FaqSection from './components/FaqSection';
+import HowItWorks from './components/HowItWorks';
+import FeaturesSection from './components/FeaturesSection';
 import { User, AppState, ProcessedImage, MAX_FREE_CREDITS, UpscaleOptions, DEFAULT_UPSCALE_OPTIONS, PremiumTier, hasFeatureAccess } from './types';
 import { upscaleImage } from './services/aiService';
 import { purchasePlan, checkPaymentSuccess, clearPaymentParam } from './services/lemonsqueezy';
@@ -530,9 +532,17 @@ const App: React.FC = () => {
 
         {/* FAQ SECTION (SEO & User Experience) - Only on Landing */}
         {appState === AppState.LANDING && (
-          <div className="bg-gray-900/50 border-t border-gray-800">
-            <FaqSection />
-          </div>
+          <>
+            <div className="bg-gray-900 border-t border-gray-800/50">
+              <HowItWorks />
+            </div>
+            <div className="bg-gray-900 border-t border-gray-800/50">
+              <FeaturesSection />
+            </div>
+            <div className="bg-gray-900/50 border-t border-gray-800">
+              <FaqSection />
+            </div>
+          </>
         )}
 
         <footer className="bg-gray-900 border-t border-gray-800 py-12 mt-12">
