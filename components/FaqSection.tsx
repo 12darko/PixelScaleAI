@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-{
-    question: "PixelScaleAI ücretsiz mi?",
+const FAQ_DATA = [
+    {
+        question: "PixelScaleAI ücretsiz mi?",
         answer: "PixelScaleAI, yeni kullanıcılara günlük ücretsiz kredi tanımlar. Daha yüksek çözünürlük (4K/8K), toplu işlem ve hız için uygun fiyatlı premium paketler sunuyoruz.",
-            slug: "ucretsiz-mi"
-},
-{
-    question: "Fotoğraflarım sunucuda saklanıyor mu?",
+        slug: "ucretsiz-mi"
+    },
+    {
+        question: "Fotoğraflarım sunucuda saklanıyor mu?",
         answer: "Gizliliğiniz önceliğimizdir. Yüklediğiniz fotoğraflar işlem bittikten sonra kısa süre içinde otomatik olarak sunucularımızdan silinir (Premium geçmiş özelliği hariç).",
-            slug: "gizlilik-ve-guvenlik"
-},
-{
-    question: "Hangi dosya formatlarını destekliyorsunuz?",
+        slug: "gizlilik-ve-guvenlik"
+    },
+    {
+        question: "Hangi dosya formatlarını destekliyorsunuz?",
         answer: "JPG, PNG, WEBP ve HEIC formatlarını destekliyoruz. Çıktı olarak PNG formatında en yüksek kalitede sonuç alırsınız.",
-            slug: "dosya-formatlari"
-},
-{
-    question: "API desteğiniz var mı?",
+        slug: "dosya-formatlari"
+    },
+    {
+        question: "API desteğiniz var mı?",
         answer: "Evet, Business paket kullanıcıları için REST API desteğimiz mevcuttur. Kendi uygulamalarınıza PixelScaleAI gücünü entegre edebilirsiniz.",
-            slug: "api-destegi"
-},
-{
-    question: "Mobil cihazlarda kullanabilir miyim?",
+        slug: "api-destegi"
+    },
+    {
+        question: "Mobil cihazlarda kullanabilir miyim?",
         answer: "Kesinlikle! PixelScaleAI tüm modern mobil tarayıcılarla tam uyumludur. Uygulama indirmeden dilediğiniz yerden kullanabilirsiniz.",
-            slug: "mobil-uyumluluk"
-}
+        slug: "mobil-uyumluluk"
+    }
 ];
 
 export const getFaqData = () => FAQ_DATA;
