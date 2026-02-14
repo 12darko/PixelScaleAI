@@ -102,16 +102,28 @@ const UpscaleOptionsPanel: React.FC<UpscaleOptionsPanelProps> = ({
                         <button
                             key={preset}
                             onClick={() => handlePresetChange(preset as QualityPreset)}
-                            className={`p-3 rounded-lg transition-all text-center group relative overflow-hidden ${currentPreset === preset
+                            className={`p-3 rounded-lg transition-all text-center group relative overflow-visible ${currentPreset === preset
                                 ? 'bg-purple-600/20 border-2 border-purple-500 text-white shadow-[0_0_20px_-5px_rgba(168,85,247,0.3)]'
                                 : 'bg-gray-700/50 border border-gray-700 text-gray-300 hover:bg-gray-700/80 hover:border-gray-600'
                                 }`}
                         >
                             <span className="text-xl block mb-1 transform group-hover:scale-110 transition-transform duration-300">{info.icon}</span>
-                            <span className="font-medium text-sm block">{info.name}</span>
+                            <span className="font-medium text-sm block flex items-center justify-center gap-1">
+                                {info.name}
+                                {preset === 'ANIME' && (
+                                    <div className="group/info relative">
+                                        <div className="w-3 h-3 rounded-full bg-gray-500/50 text-white flex items-center justify-center text-[8px] cursor-help">?</div>
+                                        {/* Tooltip */}
+                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-gray-900 border border-gray-700 rounded-lg text-xs text-gray-300 shadow-xl opacity-0 invisible group-hover/info:opacity-100 group-hover/info:visible transition-all z-50 pointer-events-none">
+                                            Çizimler için özel hat koruma modu. Kenarları pürüzsüzleştirir ve sıkıştırma izlerini (noise) temizler.
+                                            <div className="absolute top-100 left-1/2 -translate-x-1/2 border-8 border-transparent border-t-gray-900"></div>
+                                        </div>
+                                    </div>
+                                )}
+                            </span>
                             <span className="text-[10px] text-gray-400 block leading-tight mt-1 opacity-80">
                                 {preset === 'ANIME'
-                                    ? "Çizimler için özel hat koruma. Pürüzsüzleştirir."
+                                    ? "Çizimler için özel hat koruma."
                                     : info.description}
                             </span>
                         </button>
