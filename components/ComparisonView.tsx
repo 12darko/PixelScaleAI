@@ -5,12 +5,13 @@ interface ComparisonViewProps {
   originalUrl: string;
   processedUrl: string;
   onDownload: () => void;
-  onReset: () => void;
+  onReset?: () => void;
   scaleFactor?: number; // 2, 4, 8, or 16
   processingTime?: number; // Duration in seconds
+  minimal?: boolean;
 }
 
-const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedUrl, onDownload, onReset, scaleFactor = 4, processingTime = 0 }) => {
+const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedUrl, onDownload = () => { }, onReset, scaleFactor = 4, processingTime = 0, minimal = false }) => {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isHolding, setIsHolding] = useState(false);
 
@@ -55,23 +56,25 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-        <h2 className="text-2xl font-bold text-white">Sonuç</h2>
-        <div className="flex gap-3 w-full md:w-auto">
-          <button
-            onClick={onReset}
-            className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm"
-          >
-            <RefreshCw className="w-4 h-4" /> Yeni
-          </button>
-          <button
-            onClick={onDownload}
-            className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm font-medium shadow-lg shadow-purple-900/20"
-          >
-            <Download className="w-4 h-4" /> İndir ({getResolutionLabel()})
-          </button>
+      {!minimal && (
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+          <h2 className="text-2xl font-bold text-white">Sonuç</h2>
+          <div className="flex gap-3 w-full md:w-auto">
+            <button
+              onClick={onReset}
+              className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm"
+            >
+              <RefreshCw className="w-4 h-4" /> Yeni
+            </button>
+            <button
+              onClick={onDownload}
+              className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm font-medium shadow-lg shadow-purple-900/20"
+            >
+              <Download className="w-4 h-4" /> İndir ({getResolutionLabel()})
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Fixed Background Container (Glassmorphism) */}
       <div className="flex justify-center w-full">
@@ -169,20 +172,36 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-        <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50">
-          <p className="text-gray-400 text-xs uppercase mb-1">Çözünürlük</p>
-          <p className="text-white font-mono font-semibold">{getResolutionLabel()} ({scaleFactor}x)</p>
+      {!minimal && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+          <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50">
+            <p className="text-gray-400 text-xs uppercase mb-1">Çözünürlük</p>
+            <p className="text-white font-mono font-semibold">{getResolutionLabel()} ({scaleFactor}x)</p>
+          </div>
+          <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50">
+            <p className="text-gray-400 text-xs uppercase mb-1">Format</p>
+            <p className="text-white font-mono font-semibold">PNG (Yüksek Kalite)</p>
+          </div>
+          <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50 cursor-pointer hover:bg-gray-700/50 transition-colors" onClick={() => setIsFullscreen(true)}>
+            <p className="text-gray-400 text-xs uppercase mb-1">Görünüm</p>
+            <p className="text-purple-400 font-bold flex items-center justify-center gap-1"><Maximize2 className="w-3 h-3" /> Tam Ekran</p>
+          </div>
         </div>
-        <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50">
-          <p className="text-gray-400 text-xs uppercase mb-1">Format</p>
-          <p className="text-white font-mono font-semibold">PNG (Yüksek Kalite)</p>
+      )}
+
+      {/* Landing page specific fullscreen trigger for minimal mode */}
+      {minimal && (
+        <div className="flex justify-center -mt-2">
+          <button
+            onClick={() => setIsFullscreen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-xs font-medium text-gray-400 hover:text-white transition-all backdrop-blur-sm"
+          >
+            <Maximize2 className="w-3 h-3" />
+            Tam Ekran İncele
+          </button>
         </div>
-        <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50 cursor-pointer hover:bg-gray-700/50 transition-colors" onClick={() => setIsFullscreen(true)}>
-          <p className="text-gray-400 text-xs uppercase mb-1">Görünüm</p>
-          <p className="text-purple-400 font-bold flex items-center justify-center gap-1"><Maximize2 className="w-3 h-3" /> Tam Ekran</p>
-        </div>
-      </div>
+      )}
+
 
       {/* Fullscreen Modal */}
       {isFullscreen && (

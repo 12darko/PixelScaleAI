@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShoppingBag, Image as ImageIcon, Printer, Zap } from 'lucide-react';
+import ComparisonView from './ComparisonView';
 
 const features = [
     {
@@ -55,25 +56,18 @@ const FeaturesSection: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Right Visual (Interactive/Static) */}
+                {/* Right Visual (Interactive Comparison) */}
                 <div className="flex-1 w-full relative group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                    <div className="relative bg-gray-900 border border-gray-700 rounded-2xl p-2 overflow-hidden shadow-2xl">
-                        <img
-                            src="https://images.unsplash.com/photo-1621600411688-4be93cd68504?q=80&w=800&auto=format&fit=crop"
-                            alt="High Quality Example"
-                            className="rounded-xl w-full h-auto object-cover"
-                            loading="lazy"
+                    {/* Background Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl blur-3xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+
+                    {/* Comparison Component */}
+                    <div className="relative">
+                        <ComparisonView
+                            originalUrl="https://images.unsplash.com/photo-1621600411688-4be93cd68504?q=80&w=400&auto=format&fit=crop&blur=8"
+                            processedUrl="https://images.unsplash.com/photo-1621600411688-4be93cd68504?q=80&w=800&auto=format&fit=crop"
+                            minimal={true}
                         />
-                        <div className="absolute bottom-6 left-6 right-6 bg-gray-900/90 backdrop-blur border border-white/10 p-4 rounded-xl">
-                            <div className="flex justify-between items-center text-sm">
-                                <span className="text-gray-400">Önce: <span className="text-red-400">480p</span></span>
-                                <span className="text-gray-400">Sonra: <span className="text-green-400 font-bold">4K Ultra HD</span></span>
-                            </div>
-                            <div className="w-full h-1 bg-gray-700 mt-3 rounded-full overflow-hidden">
-                                <div className="w-full h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 animate-pulse"></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

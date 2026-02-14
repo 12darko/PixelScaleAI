@@ -127,52 +127,6 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelect, isProcessing }) =
         </div>
       )}
 
-      {/* Demo Images */}
-      {!isProcessing && (
-        <div className="mt-8">
-          <p className="text-sm text-gray-500 mb-3 text-center">Veya örnek bir fotoğraf ile dene:</p>
-          <div className="flex justify-center gap-4">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="w-24 h-24 rounded-lg overflow-hidden cursor-pointer border border-gray-700 hover:border-purple-500 transition-all shadow-lg group relative"
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  // Load the image and process it
-                  const res = await fetch(`https://picsum.photos/300/300?random=${i}`);
-                  const blob = await res.blob();
-                  const file = new File([blob], "sample.jpg", { type: "image/jpeg" });
-                  validateAndProcess(file);
-                }}
-              >
-                {/* Mini Comparison on Hover */}
-                <div className="relative w-full h-full">
-                  {/* Original (Blurred/Low Quality Simulation) */}
-                  <img
-                    src={`https://picsum.photos/300/300?random=${i}&blur=2`}
-                    alt="Low Res"
-                    className="absolute inset-0 w-full h-full object-cover filter blur-[1px] brightness-90 group-hover:opacity-0 transition-opacity duration-500"
-                  />
-                  <div className="absolute bottom-1 left-1 bg-black/50 text-[8px] text-white px-1 rounded opacity-100 group-hover:opacity-0 transition-opacity">ÖNCE</div>
-
-                  {/* High Res (Revealed on Hover) */}
-                  <img
-                    src={`https://picsum.photos/300/300?random=${i}`}
-                    alt="High Res"
-                    className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  />
-                  <div className="absolute bottom-1 right-1 bg-purple-600/80 text-[8px] text-white px-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">SONRA</div>
-                </div>
-
-                {/* Overlay Text */}
-                <div className="absolute inset-x-0 top-0 bg-black/60 text-[8px] text-center py-0.5 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Dene
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
