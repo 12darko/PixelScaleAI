@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Download, ArrowRight, RefreshCw, Eye } from 'lucide-react';
+import { Download, ArrowRight, RefreshCw, Eye, Maximize2, X } from 'lucide-react';
 
 interface ComparisonViewProps {
   originalUrl: string;
@@ -13,7 +13,13 @@ interface ComparisonViewProps {
 const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedUrl, onDownload, onReset, scaleFactor = 4, processingTime = 0 }) => {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isHolding, setIsHolding] = useState(false);
+
+  // Fullscreen State
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fullscreenSliderPosition, setFullscreenSliderPosition] = useState(50);
+
   const containerRef = useRef<HTMLDivElement>(null);
+  const fullscreenContainerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
   // Dynamic resolution label
@@ -172,15 +178,87 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
           <p className="text-gray-400 text-xs uppercase mb-1">Format</p>
           <p className="text-white font-mono font-semibold">PNG (Yüksek Kalite)</p>
         </div>
-        <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50">
-          <p className="text-gray-400 text-xs uppercase mb-1">İşlem Süresi</p>
-          <p className="text-green-400 font-mono font-semibold">
-            {processingTime >= 60
-              ? `${Math.floor(processingTime / 60)}dk ${processingTime % 60}sn`
-              : `${processingTime} saniye`}
-          </p>
+        <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50 cursor-pointer hover:bg-gray-700/50 transition-colors" onClick={() => setIsFullscreen(true)}>
+          <p className="text-gray-400 text-xs uppercase mb-1">Görünüm</p>
+          <p className="text-purple-400 font-bold flex items-center justify-center gap-1"><Maximize2 className="w-3 h-3" /> Tam Ekran</p>
         </div>
       </div>
+
+      {/* Fullscreen Modal */}
+      {isFullscreen && (
+        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4">
+          <button
+            onClick={() => setIsFullscreen(false)}
+            className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-50"
+          >
+            <X className="w-8 h-8" />
+          </button>
+
+          <div className="w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center relative">
+            <div className="relative w-full h-full border-2 border-dashed border-gray-700/50 rounded-2xl bg-gray-900/50 flex items-center justify-center p-0 overflow-hidden">
+              {/* Reuse the slider logic here, but with full size */}
+              <div
+                className="relative shadow-2xl rounded-lg overflow-hidden w-full h-full"
+              >
+                <div
+                  ref={fullscreenContainerRef}
+                  className="relative cursor-ew-resize select-none group w-full h-full flex items-center justify-center"
+                  onMouseMove={(e) => {
+                    if (fullscreenContainerRef.current) {
+                      const rect = fullscreenContainerRef.current.getBoundingClientRect();
+                      const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+                      setFullscreenSliderPosition((x / rect.width) * 100);
+                    }
+                  }}
+                  onMouseDown={() => { /* No drag needed for full screen hover, or just generic hover logic */ }}
+                  onTouchMove={(e) => {
+                    if (fullscreenContainerRef.current) {
+                      const rect = fullscreenContainerRef.current.getBoundingClientRect();
+                      const x = Math.max(0, Math.min(e.touches[0].clientX - rect.left, rect.width));
+                      setFullscreenSliderPosition((x / rect.width) * 100);
+                    }
+                  }}
+                >
+                  {/* Processed (Background) */}
+                  <img
+                    src={processedUrl}
+                    className="absolute inset-0 w-full h-full object-contain"
+                    draggable={false}
+                  />
+
+                  {/* Original (Overlay) */}
+                  <div
+                    className="absolute inset-0 w-full h-full pointer-events-none border-r-2 border-white/50"
+                    style={{ clipPath: `inset(0 ${100 - fullscreenSliderPosition}% 0 0)` }}
+                  >
+                    <img
+                      src={originalUrl}
+                      className="absolute inset-0 w-full h-full object-contain"
+                      draggable={false}
+                    />
+                    <div className="absolute top-4 left-4 bg-black/60 backdrop-blur px-3 py-1 rounded text-white font-bold">ÖNCE</div>
+                  </div>
+
+                  <div className="absolute top-4 right-4 bg-black/60 backdrop-blur px-3 py-1 rounded text-white font-bold pointer-events-none">SONRA</div>
+
+                  {/* Handle */}
+                  <div
+                    className="absolute top-0 bottom-0 w-[2px] bg-white shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center pointer-events-none z-10 -translate-x-1/2"
+                    style={{ left: `${fullscreenSliderPosition}%` }}
+                  >
+                    <div className="w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center text-purple-600">
+                      <ArrowRight className="w-5 h-5 rotate-180" />
+                      <ArrowRight className="w-5 h-5" />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="text-gray-400 mt-4 text-sm">Esc tuşuna basarak veya sağ üstteki çarpıya tıklayarak çıkabilirsiniz.</p>
+        </div>
+      )}
     </div>
   );
 };
