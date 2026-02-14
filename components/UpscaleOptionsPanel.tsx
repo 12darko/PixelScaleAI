@@ -193,43 +193,44 @@ interface ToggleOptionProps {
 const ToggleOption: React.FC<ToggleOptionProps> = ({
     icon, label, description, checked, locked, tierBadge, onChange
 }) => (
-    <button
-        onClick={() => onChange(!checked)}
-        className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${checked
-            ? 'bg-purple-600/20 border border-purple-500/50'
+    <div
+        onClick={() => !locked && onChange(!checked)}
+        className={`w-full flex items-center justify-between p-3 rounded-lg transition-all cursor-pointer group border ${checked
+            ? 'bg-purple-600/20 border-purple-500/50 shadow-[0_0_15px_-5px_rgba(168,85,247,0.3)]'
             : locked
-                ? 'bg-gray-900/30 border border-gray-800'
-                : 'bg-gray-700/30 border border-gray-700 hover:bg-gray-700/50'
+                ? 'bg-gray-900/30 border-gray-800 opacity-60 cursor-not-allowed'
+                : 'bg-gray-800/30 border-white/5 hover:bg-gray-800/50 hover:border-white/10'
             }`}
     >
         <div className="flex items-center gap-3">
-            <span className={checked ? 'text-purple-400' : 'text-gray-500'}>{icon}</span>
+            <div className={`p-2 rounded-md ${checked ? 'bg-purple-500/20 text-purple-300' : 'bg-gray-800 text-gray-500 group-hover:text-gray-400'} transition-colors`}>
+                {icon}
+            </div>
             <div className="text-left">
                 <div className="flex items-center gap-2">
-                    <span className={`text-sm ${checked ? 'text-white' : locked ? 'text-gray-500' : 'text-gray-300'}`}>
+                    <span className={`text-sm font-medium ${checked ? 'text-white' : 'text-gray-300'}`}>
                         {label}
                     </span>
                     {tierBadge && (
-                        <span className="text-[10px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] bg-amber-500/10 border border-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded">
                             {tierBadge}
                         </span>
                     )}
                 </div>
-                <span className="text-[10px] text-gray-500">{description}</span>
+                <p className="text-[10px] text-gray-500 leading-tight mt-0.5">{description}</p>
             </div>
         </div>
-        <div className="flex items-center gap-2">
+
+        <div className="relative">
             {locked ? (
-                <Lock className="w-4 h-4 text-amber-400" />
+                <Lock className="w-4 h-4 text-gray-600" />
             ) : (
-                <div className={`w-10 h-5 rounded-full transition-colors ${checked ? 'bg-purple-600' : 'bg-gray-600'
-                    }`}>
-                    <div className={`w-4 h-4 bg-white rounded-full mt-0.5 transition-transform ${checked ? 'ml-5' : 'ml-0.5'
-                        }`} />
+                <div className={`w-9 h-5 rounded-full transition-colors duration-300 ${checked ? 'bg-purple-600 shadow-[0_0_10px_rgba(147,51,234,0.5)]' : 'bg-gray-700'}`}>
+                    <div className={`w-3.5 h-3.5 bg-white rounded-full mt-0.5 shadow-sm transition-transform duration-300 ${checked ? 'translate-x-[18px]' : 'translate-x-[2px]'}`} />
                 </div>
             )}
         </div>
-    </button>
+    </div>
 );
 
 export default UpscaleOptionsPanel;

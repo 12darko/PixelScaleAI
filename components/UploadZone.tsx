@@ -87,7 +87,7 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelect, isProcessing }) =
 
           <div className="flex flex-col items-center justify-center text-center space-y-6">
             {/* Icon Container with Glow */}
-            <div className={`relative p-6 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 shadow-inner group-hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-300 ${dragActive ? 'scale-110 shadow-[0_0_30px_rgba(168,85,247,0.6)]' : ''}`}>
+            <div className={`relative p-6 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 shadow-inner group-hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-300 ${dragActive ? 'scale-110 shadow-[0_0_30px_rgba(168,85,247,0.6)]' : 'animate-pulse-slow'}`}>
               <div className="absolute inset-0 rounded-2xl bg-purple-500/10 blur-xl group-hover:bg-purple-500/20 transition-colors"></div>
               {isProcessing ? (
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-400"></div>

@@ -280,12 +280,16 @@ const App: React.FC = () => {
 
   return (
     <HelmetProvider>
-      <div className="min-h-screen flex flex-col bg-[#050505] text-white font-sans selection:bg-purple-500 selection:text-white overflow-x-hidden relative">
-        {/* Dynamic Mesh Gradient Background */}
+      <div className="min-h-screen flex flex-col bg-[#030014] text-white font-sans selection:bg-purple-500/30 selection:text-purple-200 overflow-x-hidden relative">
+
+        {/* Noise Texture Overlay */}
+        <div className="bg-noise"></div>
+
+        {/* Dynamic Deep Space Mesh Gradient Background */}
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-purple-900/20 blur-[120px] animate-pulse-slow"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-900/20 blur-[120px] animate-pulse-slow delay-1000"></div>
-          <div className="absolute top-[20%] left-[50%] -translate-x-1/2 w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[150px]"></div>
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[120px] animate-pulse-slow"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-900/10 blur-[120px] animate-pulse-slow delay-1000"></div>
+          <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[60%] h-[60%] rounded-full bg-[#1a103c]/20 blur-[100px]"></div>
         </div>
 
         {/* Content Wrapper to ensure it sits above background */}
@@ -348,21 +352,32 @@ const App: React.FC = () => {
             {/* LANDING STATE */}
             {appState === AppState.LANDING && !isProcessing && (
               <div className="w-full flex flex-col items-center animate-fade-in-up">
-                <div className="text-center max-w-3xl mb-12">
-                  <div className="inline-block px-4 py-1.5 rounded-full bg-purple-900/30 border border-purple-500/30 text-purple-300 text-xs font-semibold tracking-wide uppercase mb-4 shadow-[0_0_15px_-3px_rgba(168,85,247,0.4)] backdrop-blur-sm">
+                <div className="text-center max-w-4xl mb-16 relative z-10">
+
+                  {/* Glowing Badge */}
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-purple-200 text-xs font-medium tracking-wide uppercase mb-8 shadow-[0_0_20px_-5px_rgba(168,85,247,0.5)] hover:bg-white/10 transition-colors cursor-default">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                    </span>
                     PixelScale v2 Engine
                   </div>
-                  <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight">
-                    Her Pikseli <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Mükemmelleştirin</span>
+
+                  {/* Hero Title with Glow */}
+                  <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-tight glow-text">
+                    Her Pikseli <br className="hidden md:block" />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 animate-gradient-x">Mükemmelleştirin</span>
                   </h1>
-                  <p className="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+
+                  {/* Hero Description */}
+                  <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed font-light">
                     {!user ? (
                       <span>
-                        Misafir olarak <strong>{guestCredits} ücretsiz hakkınız</strong> var.
-                        Giriş yapın ve <strong>+20 kredi</strong> kazanın.
+                        Yapay zeka ile fotoğraflarınızı 4K kalitesine yükseltin. <br />
+                        Misafir olarak <strong className="text-white">5 ücretsiz hakkınız</strong> var.
                       </span>
                     ) : (
-                      <span>Hoşgeldin {user.name.split(' ')[0]}. <strong>{user.credits} kredin</strong> ile yaratıcılığını konuştur.</span>
+                      <span>Hoşgeldin {user.name.split(' ')[0]}. <strong className="text-white">{user.credits} kredin</strong> ile yaratıcılığını konuştur.</span>
                     )}
                   </p>
 

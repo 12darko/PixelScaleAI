@@ -36,28 +36,31 @@ const HowItWorks: React.FC = () => {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {steps.map((step, index) => (
-                    <div key={index} className="relative group">
+                    <div
+                        key={index}
+                        className="relative group animate-fade-in-up"
+                        style={{ animationDelay: `${index * 150}ms` }}
+                    >
                         {/* Card Glow Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
                         {/* Glass Card */}
-                        <div className="relative bg-white/5 border border-white/10 p-8 rounded-2xl h-full backdrop-blur-sm hover:bg-white/10 transition-colors duration-300 flex flex-col items-center text-center">
+                        <div className="relative bg-[#0f0e1a]/60 border border-white/5 p-8 rounded-3xl h-full backdrop-blur-md hover:bg-[#1a1825]/80 hover:border-purple-500/30 transition-all duration-500 flex flex-col items-start text-left hover:-translate-y-2 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
 
                             {/* Step Number Badge */}
-                            <div className="absolute -top-4 -left-4 w-10 h-10 bg-black/80 border border-purple-500/30 rounded-full flex items-center justify-center font-bold text-gray-400 text-sm shadow-xl group-hover:text-white group-hover:border-purple-500 transition-all">
-                                {index + 1}
+                            <div className="absolute top-6 right-6 text-5xl font-black text-white/5 group-hover:text-purple-500/20 transition-colors select-none font-serif">
+                                0{index + 1}
                             </div>
 
                             {/* Icon Container */}
-                            <div className="mb-6 w-20 h-20 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500 border border-white/5">
-                                <div className="absolute inset-0 bg-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity blur-md"></div>
+                            <div className="mb-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500 border border-white/10 group-hover:border-purple-500/50">
                                 {step.icon}
                             </div>
 
-                            <h3 className="text-xl font-bold text-white mb-4 group-hover:text-purple-300 transition-colors">{step.title}</h3>
-                            <p className="text-gray-400 text-sm leading-relaxed font-light">
+                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">{step.title.split('. ')[1]}</h3>
+                            <p className="text-gray-400 text-sm leading-relaxed font-light opacity-80 group-hover:opacity-100 transition-opacity">
                                 {step.description}
                             </p>
                         </div>
