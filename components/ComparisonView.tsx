@@ -219,15 +219,17 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
             <div
               ref={fullscreenContainerRef}
               className="relative w-full h-full flex items-center justify-center cursor-ew-resize select-none"
+              onMouseDown={() => { isDragging.current = true; }}
               onMouseMove={(e) => {
-                if (fullscreenContainerRef.current) {
+                if (isDragging.current && fullscreenContainerRef.current) {
                   const rect = fullscreenContainerRef.current.getBoundingClientRect();
                   const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
                   setFullscreenSliderPosition((x / rect.width) * 100);
                 }
               }}
+              onTouchStart={() => { isDragging.current = true; }}
               onTouchMove={(e) => {
-                if (fullscreenContainerRef.current) {
+                if (isDragging.current && fullscreenContainerRef.current) {
                   const rect = fullscreenContainerRef.current.getBoundingClientRect();
                   const x = Math.max(0, Math.min(e.touches[0].clientX - rect.left, rect.width));
                   setFullscreenSliderPosition((x / rect.width) * 100);
