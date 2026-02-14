@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { Download, ArrowRight, RefreshCw, Eye, Maximize2, X } from 'lucide-react';
 
 interface ComparisonViewProps {
@@ -203,9 +204,9 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
       )}
 
 
-      {/* Fullscreen Modal */}
-      {isFullscreen && (
-        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4">
+      {/* Fullscreen Modal - Portalled to body to escape parent stacking contexts */}
+      {isFullscreen && ReactDOM.createPortal(
+        <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 animate-fade-in">
           <button
             onClick={() => setIsFullscreen(false)}
             className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-50"
@@ -278,7 +279,8 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
           <div className="bg-black/80 backdrop-blur-md text-white px-6 py-2 rounded-full mt-4 text-sm border border-white/10 z-50">
             Esc ile çıkış yapabilirsiniz
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
