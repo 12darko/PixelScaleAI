@@ -213,69 +213,71 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
             <X className="w-8 h-8" />
           </button>
 
-          <div className="w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center relative">
-            <div className="relative w-full h-full border-2 border-dashed border-gray-700/50 rounded-2xl bg-gray-900/50 flex items-center justify-center p-0 overflow-hidden">
-              {/* Reuse the slider logic here, but with full size */}
+          <div className="flex-1 w-full h-full relative flex items-center justify-center overflow-hidden">
+            {/* Fullscreen Slider */}
+            <div
+              ref={fullscreenContainerRef}
+              className="relative w-full h-full flex items-center justify-center cursor-ew-resize select-none"
+              onMouseMove={(e) => {
+                if (fullscreenContainerRef.current) {
+                  const rect = fullscreenContainerRef.current.getBoundingClientRect();
+                  const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+                  setFullscreenSliderPosition((x / rect.width) * 100);
+                }
+              }}
+              onTouchMove={(e) => {
+                if (fullscreenContainerRef.current) {
+                  const rect = fullscreenContainerRef.current.getBoundingClientRect();
+                  const x = Math.max(0, Math.min(e.touches[0].clientX - rect.left, rect.width));
+                  setFullscreenSliderPosition((x / rect.width) * 100);
+                }
+              }}
+            >
+              {/* Processed (Background) */}
+              <img
+                src={processedUrl}
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+                draggable={false}
+                alt="After"
+              />
+
+              {/* Original (Overlay) */}
               <div
-                className="relative shadow-2xl rounded-lg overflow-hidden w-full h-full"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none"
+                style={{ clipPath: `inset(0 ${100 - fullscreenSliderPosition}% 0 0)` }}
               >
-                <div
-                  ref={fullscreenContainerRef}
-                  className="relative cursor-ew-resize select-none group w-full h-full flex items-center justify-center"
-                  onMouseMove={(e) => {
-                    if (fullscreenContainerRef.current) {
-                      const rect = fullscreenContainerRef.current.getBoundingClientRect();
-                      const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-                      setFullscreenSliderPosition((x / rect.width) * 100);
-                    }
-                  }}
-                  onMouseDown={() => { /* No drag needed for full screen hover, or just generic hover logic */ }}
-                  onTouchMove={(e) => {
-                    if (fullscreenContainerRef.current) {
-                      const rect = fullscreenContainerRef.current.getBoundingClientRect();
-                      const x = Math.max(0, Math.min(e.touches[0].clientX - rect.left, rect.width));
-                      setFullscreenSliderPosition((x / rect.width) * 100);
-                    }
-                  }}
-                >
-                  {/* Processed (Background) */}
-                  <img
-                    src={processedUrl}
-                    className="absolute inset-0 w-full h-full object-contain"
-                    draggable={false}
-                  />
+                <img
+                  src={originalUrl}
+                  className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+                  draggable={false}
+                  alt="Before"
+                />
+                {/* Before Label */}
+                <div className="absolute top-8 left-8 bg-black/60 backdrop-blur px-4 py-2 rounded-full text-white font-bold border border-white/20">ÖNCE</div>
+              </div>
 
-                  {/* Original (Overlay) */}
-                  <div
-                    className="absolute inset-0 w-full h-full pointer-events-none border-r-2 border-white/50"
-                    style={{ clipPath: `inset(0 ${100 - fullscreenSliderPosition}% 0 0)` }}
-                  >
-                    <img
-                      src={originalUrl}
-                      className="absolute inset-0 w-full h-full object-contain"
-                      draggable={false}
-                    />
-                    <div className="absolute top-4 left-4 bg-black/60 backdrop-blur px-3 py-1 rounded text-white font-bold">ÖNCE</div>
+              {/* After Label (Outside clip path) */}
+              <div className="absolute top-8 right-8 bg-black/60 backdrop-blur px-4 py-2 rounded-full text-white font-bold border border-white/20 pointer-events-none">SONRA</div>
+
+              {/* Handle Line */}
+              <div
+                className="absolute top-0 bottom-0 w-[2px] bg-white shadow-[0_0_20px_rgba(0,0,0,0.5)] cursor-ew-resize z-20"
+                style={{ left: `${fullscreenSliderPosition}%` }}
+              >
+                {/* Handle Circle */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md border border-white/40 rounded-full shadow-[0_0_30px_rgba(168,85,247,0.4)] flex items-center justify-center">
+                  <div className="flex gap-1">
+                    <div className="w-0.5 h-4 bg-white/80 rounded-full"></div>
+                    <div className="w-0.5 h-4 bg-white/80 rounded-full"></div>
                   </div>
-
-                  <div className="absolute top-4 right-4 bg-black/60 backdrop-blur px-3 py-1 rounded text-white font-bold pointer-events-none">SONRA</div>
-
-                  {/* Handle */}
-                  <div
-                    className="absolute top-0 bottom-0 w-[2px] bg-white shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center pointer-events-none z-10 -translate-x-1/2"
-                    style={{ left: `${fullscreenSliderPosition}%` }}
-                  >
-                    <div className="w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center text-purple-600">
-                      <ArrowRight className="w-5 h-5 rotate-180" />
-                      <ArrowRight className="w-5 h-5" />
-                    </div>
-                  </div>
-
                 </div>
               </div>
+
             </div>
           </div>
-          <p className="text-gray-400 mt-4 text-sm">Esc tuşuna basarak veya sağ üstteki çarpıya tıklayarak çıkabilirsiniz.</p>
+          <div className="bg-black/80 backdrop-blur-md text-white px-6 py-2 rounded-full mt-4 text-sm border border-white/10 z-50">
+            Esc ile çıkış yapabilirsiniz
+          </div>
         </div>
       )}
     </div>
