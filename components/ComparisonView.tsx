@@ -67,16 +67,20 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
         </div>
       </div>
 
-      {/* Fixed Background Container (Matches UploadZone) */}
+      {/* Fixed Background Container (Glassmorphism) */}
       <div className="flex justify-center w-full">
-        {/* Outer Premium Ring */}
-        <div className="relative p-2 rounded-3xl bg-gray-800/30 border border-white/5 backdrop-blur-sm shadow-xl w-full max-w-2xl">
-          {/* Inner Fixed Box (Dashed Look) - Exact Match to UploadZone Size */}
-          <div className="relative h-[320px] w-full border-2 border-dashed border-gray-700/50 rounded-2xl bg-gray-900/50 flex items-center justify-center p-6">
+        {/* Outer Glow Container */}
+        <div className="relative p-[1px] rounded-3xl bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
+
+          {/* Inner Fixed Box */}
+          <div className="relative h-[320px] w-full rounded-[23px] bg-black/60 flex items-center justify-center p-0 overflow-hidden group">
+
+            {/* Subtle Grid Background */}
+            <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
 
             {/* Image Slider Component (Centered & Contained) */}
             <div
-              className="relative shadow-2xl rounded-lg overflow-hidden"
+              className="relative shadow-2xl overflow-hidden z-10"
               style={{
                 maxHeight: '100%',
                 maxWidth: '100%',
@@ -95,7 +99,7 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
                   src={isHolding ? originalUrl : processedUrl}
                   alt="İşlenmiş Yüksek Çözünürlüklü Görsel (Sonra)"
                   className="block max-h-full max-w-full object-contain"
-                  style={{ maxHeight: '280px' }} // Highly compacted fixed size
+                  style={{ maxHeight: '320px' }} // Full height usage
                   draggable={false}
                   loading="lazy"
                 />
@@ -103,8 +107,8 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
                 {!isHolding && (
                   <>
                     {/* Labels */}
-                    <div className="absolute top-4 right-4 bg-black/60 backdrop-blur border border-white/10 text-white text-xs px-2 py-1 rounded z-20 pointer-events-none">
-                      SONRA ({getResolutionLabel()})
+                    <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold tracking-wider px-3 py-1.5 rounded-full z-20 pointer-events-none shadow-lg">
+                      SONRA <span className="text-purple-400">({getResolutionLabel()})</span>
                     </div>
 
                     {/* Original Image (Clipped overlay) */}
@@ -120,20 +124,20 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ originalUrl, processedU
                         loading="lazy"
                       />
                       {/* Label Before */}
-                      <div className="absolute top-4 left-4 bg-black/60 backdrop-blur border border-white/10 text-white text-xs px-2 py-1 rounded">
+                      <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold tracking-wider px-3 py-1.5 rounded-full shadow-lg">
                         ÖNCE
                       </div>
                     </div>
 
                     {/* Slider Handle */}
                     <div
-                      className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center pointer-events-none z-10 -translate-x-1/2"
+                      className="absolute top-0 bottom-0 w-[2px] bg-white/50 shadow-[0_0_20px_rgba(255,255,255,0.5)] flex items-center justify-center pointer-events-none z-10 -translate-x-1/2 backdrop-blur-sm"
                       style={{ left: `${sliderPosition}%` }}
                     >
-                      <div className="w-8 h-8 bg-white rounded-full shadow-xl flex items-center justify-center transform hover:scale-110 transition-transform">
-                        <div className="flex gap-1">
-                          <ArrowRight className="w-4 h-4 text-purple-600 rotate-180" />
-                          <ArrowRight className="w-4 h-4 text-purple-600" />
+                      <div className="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/40 rounded-full shadow-[0_0_30px_rgba(168,85,247,0.4)] flex items-center justify-center transform hover:scale-110 transition-transform hover:bg-white/20 cursor-grab active:cursor-grabbing">
+                        <div className="flex gap-0.5">
+                          <div className="w-0.5 h-3 bg-white/80 rounded-full"></div>
+                          <div className="w-0.5 h-3 bg-white/80 rounded-full"></div>
                         </div>
                       </div>
                     </div>

@@ -9,8 +9,8 @@ const steps = [
     },
     {
         icon: <Layers className="w-8 h-8 text-blue-400" />,
-        title: "2. Derin Öğrenme (AI)",
-        description: "Real-ESRGAN ve GAN (Generative Adversarial Networks) mimarisi kullanılarak, eksik pikseller akıllıca tahmin edilir. Bu süreçte sadece boyut değil, doku ve detaylar da zenginleştirilir."
+        title: "2. Nöral Ağ İşleme (AI)",
+        description: "Gelişmiş Generative AI modelleri kullanılarak, eksik pikseller akıllıca tahmin edilir. Bu süreçte sadece boyut değil, doku ve detaylar da sıfırdan hayal edilerek zenginleştirilir."
     },
     {
         icon: <Sparkles className="w-8 h-8 text-pink-400" />,
@@ -19,7 +19,7 @@ const steps = [
     },
     {
         icon: <Download className="w-8 h-8 text-green-400" />,
-        title: "4. Yüksek Kalite Çıktı",
+        title: "4. Kristal Netliğinde Çıktı",
         description: "İşlem tamamlandığında 4K veya 8K çözünürlüğünde, baskıya uygun ve kristal netliğinde sonucunuz hazır olur. İster indirin, ister sosyal medyada paylaşın."
     }
 ];
@@ -38,17 +38,29 @@ const HowItWorks: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {steps.map((step, index) => (
-                    <div key={index} className="bg-gray-800/30 border border-gray-700 p-6 rounded-2xl hover:bg-gray-800/50 transition-colors relative group">
-                        <div className="absolute -top-4 -left-4 w-12 h-12 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center font-bold text-gray-500 group-hover:text-white group-hover:border-purple-500 transition-all">
-                            {index + 1}
+                    <div key={index} className="relative group">
+                        {/* Card Glow Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                        {/* Glass Card */}
+                        <div className="relative bg-white/5 border border-white/10 p-8 rounded-2xl h-full backdrop-blur-sm hover:bg-white/10 transition-colors duration-300 flex flex-col items-center text-center">
+
+                            {/* Step Number Badge */}
+                            <div className="absolute -top-4 -left-4 w-10 h-10 bg-black/80 border border-purple-500/30 rounded-full flex items-center justify-center font-bold text-gray-400 text-sm shadow-xl group-hover:text-white group-hover:border-purple-500 transition-all">
+                                {index + 1}
+                            </div>
+
+                            {/* Icon Container */}
+                            <div className="mb-6 w-20 h-20 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500 border border-white/5">
+                                <div className="absolute inset-0 bg-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity blur-md"></div>
+                                {step.icon}
+                            </div>
+
+                            <h3 className="text-xl font-bold text-white mb-4 group-hover:text-purple-300 transition-colors">{step.title}</h3>
+                            <p className="text-gray-400 text-sm leading-relaxed font-light">
+                                {step.description}
+                            </p>
                         </div>
-                        <div className="mb-4 bg-gray-900/50 w-16 h-16 rounded-xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
-                            {step.icon}
-                        </div>
-                        <h3 className="text-xl font-semibold text-white mb-3 text-center">{step.title}</h3>
-                        <p className="text-gray-400 text-sm leading-relaxed text-center">
-                            {step.description}
-                        </p>
                     </div>
                 ))}
             </div>

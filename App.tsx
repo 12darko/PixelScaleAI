@@ -280,323 +280,333 @@ const App: React.FC = () => {
 
   return (
     <HelmetProvider>
-      <div className="min-h-screen flex flex-col bg-gray-900 text-white font-sans selection:bg-purple-500 selection:text-white">
-        <SeoHead
-          title={appState === AppState.LANDING ? undefined :
-            appState === AppState.PRIVACY ? 'Gizlilik Politikası' :
-              appState === AppState.TERMS ? 'Kullanım Şartları' :
-                appState === AppState.CONTACT ? 'İletişim' : 'PixelScaleAI'}
-          path={appState === AppState.LANDING ? '/' :
-            appState === AppState.PRIVACY ? '/privacy' :
-              appState === AppState.TERMS ? '/terms' :
-                appState === AppState.CONTACT ? '/contact' : '/'}
-        />
-        <Navbar
-          user={user}
-          guestCredits={guestCredits}
-          onLogin={() => setIsAuthModalOpen(true)}
-          onLogout={handleLogout}
-          onOpenPricing={() => setIsPricingOpen(true)}
-        />
+      <div className="min-h-screen flex flex-col bg-[#050505] text-white font-sans selection:bg-purple-500 selection:text-white overflow-x-hidden relative">
+        {/* Dynamic Mesh Gradient Background */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-purple-900/20 blur-[120px] animate-pulse-slow"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-900/20 blur-[120px] animate-pulse-slow delay-1000"></div>
+          <div className="absolute top-[20%] left-[50%] -translate-x-1/2 w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[150px]"></div>
+        </div>
 
-        <AuthModal
-          isOpen={isAuthModalOpen}
-          onClose={() => setIsAuthModalOpen(false)}
-          onSuccess={() => setIsAuthModalOpen(false)}
-        />
+        {/* Content Wrapper to ensure it sits above background */}
+        <div className="relative z-10 flex flex-col flex-1">
+          <SeoHead
+            title={appState === AppState.LANDING ? undefined :
+              appState === AppState.PRIVACY ? 'Gizlilik Politikası' :
+                appState === AppState.TERMS ? 'Kullanım Şartları' :
+                  appState === AppState.CONTACT ? 'İletişim' : 'PixelScaleAI'}
+            path={appState === AppState.LANDING ? '/' :
+              appState === AppState.PRIVACY ? '/privacy' :
+                appState === AppState.TERMS ? '/terms' :
+                  appState === AppState.CONTACT ? '/contact' : '/'}
+          />
+          <Navbar
+            user={user}
+            guestCredits={guestCredits}
+            onLogin={() => setIsAuthModalOpen(true)}
+            onLogout={handleLogout}
+            onOpenPricing={() => setIsPricingOpen(true)}
+          />
 
-        <main className="flex-1 container mx-auto px-4 py-8 flex flex-col items-center">
+          <AuthModal
+            isOpen={isAuthModalOpen}
+            onClose={() => setIsAuthModalOpen(false)}
+            onSuccess={() => setIsAuthModalOpen(false)}
+          />
 
-          {/* Ad Space Top */}
-          <AdBanner slotId="top-banner" className="mb-8" />
+          <main className="flex-1 container mx-auto px-4 py-8 flex flex-col items-center">
 
-          {/* PROCESSING STATE WITH STEPS */}
-          {appState === AppState.PROCESSING && (
-            <div className="w-full max-w-2xl mx-auto text-center py-12 animate-fade-in">
-              <div className="w-24 h-24 mx-auto mb-6 relative">
-                <div className="absolute inset-0 rounded-full border-4 border-gray-700"></div>
-                <div className="absolute inset-0 rounded-full border-4 border-t-purple-500 animate-spin"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Zap className="w-8 h-8 text-purple-500 animate-pulse" />
+            {/* Ad Space Top */}
+            <AdBanner slotId="top-banner" className="mb-8" />
+
+            {/* PROCESSING STATE WITH STEPS */}
+            {appState === AppState.PROCESSING && (
+              <div className="w-full max-w-2xl mx-auto text-center py-12 animate-fade-in">
+                <div className="w-24 h-24 mx-auto mb-6 relative">
+                  <div className="absolute inset-0 rounded-full border-4 border-gray-700"></div>
+                  <div className="absolute inset-0 rounded-full border-4 border-t-purple-500 animate-spin"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Zap className="w-8 h-8 text-purple-500 animate-pulse" />
+                  </div>
                 </div>
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Fotoğrafınız İyileştiriliyor ({selectedScale}x)</h2>
-              <p className="text-purple-300 font-medium mb-8 min-h-[1.5rem] transition-all">
-                {processingStep === PROCESSING_STEPS.length - 1
-                  ? `${selectedScale}x çıktı oluşturuluyor...`
-                  : PROCESSING_STEPS[processingStep]}
-              </p>
-
-              <div className="flex justify-between max-w-md mx-auto relative">
-                <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-800 -z-10 -translate-y-1/2 rounded"></div>
-                {PROCESSING_STEPS.map((_, idx) => (
-                  <div key={idx} className={`w-4 h-4 rounded-full border-2 transition-all duration-500 ${idx <= processingStep ? 'bg-purple-500 border-purple-500 scale-125' : 'bg-gray-800 border-gray-600'}`}></div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* LANDING STATE */}
-          {appState === AppState.LANDING && !isProcessing && (
-            <div className="w-full flex flex-col items-center animate-fade-in-up">
-              <div className="text-center max-w-3xl mb-12">
-                <div className="inline-block px-4 py-1.5 rounded-full bg-purple-900/30 border border-purple-500/30 text-purple-300 text-xs font-semibold tracking-wide uppercase mb-4">
-                  Real-ESRGAN AI
-                </div>
-                <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight">
-                  Her Pikseli <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Mükemmelleştirin</span>
-                </h1>
-                <p className="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                  {!user ? (
-                    <span>
-                      Misafir olarak <strong>{guestCredits} ücretsiz hakkınız</strong> var.
-                      Giriş yapın ve <strong>+20 kredi</strong> kazanın.
-                    </span>
-                  ) : (
-                    <span>Hoşgeldin {user.name.split(' ')[0]}. <strong>{user.credits} kredin</strong> ile yaratıcılığını konuştur.</span>
-                  )}
+                <h2 className="text-2xl font-bold mb-2">Fotoğrafınız İyileştiriliyor ({selectedScale}x)</h2>
+                <p className="text-purple-300 font-medium mb-8 min-h-[1.5rem] transition-all">
+                  {processingStep === PROCESSING_STEPS.length - 1
+                    ? `${selectedScale}x çıktı oluşturuluyor...`
+                    : PROCESSING_STEPS[processingStep]}
                 </p>
 
-              </div>
-
-
-              {/* Resolution selection moved to UpscaleOptionsPanel - no duplicate here */}
-
-              <UploadZone
-                onFileSelect={handleFileSelect}
-                isProcessing={isProcessing}
-              />
-
-              {/* ADVANCED OPTIONS PANEL */}
-              <div className="mt-8 w-full max-w-2xl">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-gray-400 uppercase">Gelişmiş Seçenekler</h3>
-                  {user && (
-                    <button
-                      onClick={() => setIsHistoryModalOpen(true)}
-                      className="flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 transition-colors"
-                    >
-                      <History className="w-4 h-4" />
-                      İşlem Geçmişi
-                    </button>
-                  )}
+                <div className="flex justify-between max-w-md mx-auto relative">
+                  <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-800 -z-10 -translate-y-1/2 rounded"></div>
+                  {PROCESSING_STEPS.map((_, idx) => (
+                    <div key={idx} className={`w-4 h-4 rounded-full border-2 transition-all duration-500 ${idx <= processingStep ? 'bg-purple-500 border-purple-500 scale-125' : 'bg-gray-800 border-gray-600'}`}></div>
+                  ))}
                 </div>
-                <UpscaleOptionsPanel
-                  options={upscaleOptions}
-                  onChange={(opts) => {
-                    setUpscaleOptions(opts);
-                    setSelectedScale(opts.scale);
+              </div>
+            )}
+
+            {/* LANDING STATE */}
+            {appState === AppState.LANDING && !isProcessing && (
+              <div className="w-full flex flex-col items-center animate-fade-in-up">
+                <div className="text-center max-w-3xl mb-12">
+                  <div className="inline-block px-4 py-1.5 rounded-full bg-purple-900/30 border border-purple-500/30 text-purple-300 text-xs font-semibold tracking-wide uppercase mb-4 shadow-[0_0_15px_-3px_rgba(168,85,247,0.4)] backdrop-blur-sm">
+                    PixelScale v2 Engine
+                  </div>
+                  <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight">
+                    Her Pikseli <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Mükemmelleştirin</span>
+                  </h1>
+                  <p className="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                    {!user ? (
+                      <span>
+                        Misafir olarak <strong>{guestCredits} ücretsiz hakkınız</strong> var.
+                        Giriş yapın ve <strong>+20 kredi</strong> kazanın.
+                      </span>
+                    ) : (
+                      <span>Hoşgeldin {user.name.split(' ')[0]}. <strong>{user.credits} kredin</strong> ile yaratıcılığını konuştur.</span>
+                    )}
+                  </p>
+
+                </div>
+
+
+                {/* Resolution selection moved to UpscaleOptionsPanel - no duplicate here */}
+
+                <UploadZone
+                  onFileSelect={handleFileSelect}
+                  isProcessing={isProcessing}
+                />
+
+                {/* ADVANCED OPTIONS PANEL */}
+                <div className="mt-8 w-full max-w-2xl">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase">Gelişmiş Seçenekler</h3>
+                    {user && (
+                      <button
+                        onClick={() => setIsHistoryModalOpen(true)}
+                        className="flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 transition-colors"
+                      >
+                        <History className="w-4 h-4" />
+                        İşlem Geçmişi
+                      </button>
+                    )}
+                  </div>
+                  <UpscaleOptionsPanel
+                    options={upscaleOptions}
+                    onChange={(opts) => {
+                      setUpscaleOptions(opts);
+                      setSelectedScale(opts.scale);
+                    }}
+                    userTier={user?.premiumTier || 'free'}
+                    onUpgradeClick={() => setIsPricingOpen(true)}
+                  />
+                </div>
+
+                {error && (
+                  <div className="mt-6 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg max-w-lg flex items-center gap-3">
+                    <AlertTriangle className="w-5 h-5 shrink-0" />
+                    <span className="text-sm">{error}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* RESULT STATE */}
+            {appState === AppState.RESULT && originalImage && processedImage && (
+              <div className="w-full flex flex-col items-center animate-fade-in">
+                <ComparisonView
+                  originalUrl={originalImage}
+                  processedUrl={processedImage}
+                  onDownload={handleDownload}
+                  onReset={() => {
+                    setAppState(AppState.LANDING);
+                    setOriginalImage(null);
+                    setProcessedImage(null);
                   }}
-                  userTier={user?.premiumTier || 'free'}
-                  onUpgradeClick={() => setIsPricingOpen(true)}
+                  scaleFactor={selectedScale}
+                  processingTime={processingTime}
                 />
               </div>
+            )}
 
-              {error && (
-                <div className="mt-6 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg max-w-lg flex items-center gap-3">
-                  <AlertTriangle className="w-5 h-5 shrink-0" />
-                  <span className="text-sm">{error}</span>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* RESULT STATE */}
-          {appState === AppState.RESULT && originalImage && processedImage && (
-            <div className="w-full flex flex-col items-center animate-fade-in">
-              <ComparisonView
-                originalUrl={originalImage}
-                processedUrl={processedImage}
-                onDownload={handleDownload}
-                onReset={() => {
-                  setAppState(AppState.LANDING);
-                  setOriginalImage(null);
-                  setProcessedImage(null);
-                }}
-                scaleFactor={selectedScale}
-                processingTime={processingTime}
-              />
-            </div>
-          )}
-
-          {/* PRIVACY POLICY PAGE */}
-          {appState === AppState.PRIVACY && (
-            <div className="w-full max-w-4xl mx-auto animate-fade-in">
-              <button
-                onClick={() => navigateTo('/', AppState.LANDING)}
-                className="mb-6 text-purple-400 hover:text-purple-300 flex items-center gap-2"
-              >
-                ← Ana Sayfaya Dön
-              </button>
-              <PrivacyPolicy />
-            </div>
-          )}
-
-          {/* TERMS OF SERVICE PAGE */}
-          {appState === AppState.TERMS && (
-            <div className="w-full max-w-4xl mx-auto animate-fade-in">
-              <button
-                onClick={() => navigateTo('/', AppState.LANDING)}
-                className="mb-6 text-purple-400 hover:text-purple-300 flex items-center gap-2"
-              >
-                ← Ana Sayfaya Dön
-              </button>
-              <TermsOfService />
-            </div>
-          )}
-
-          {/* CONTACT PAGE */}
-          {appState === AppState.CONTACT && (
-            <div className="w-full max-w-4xl mx-auto animate-fade-in">
-              <button
-                onClick={() => navigateTo('/', AppState.LANDING)}
-                className="mb-6 text-purple-400 hover:text-purple-300 flex items-center gap-2"
-              >
-                ← Ana Sayfaya Dön
-              </button>
-              <ContactPage />
-            </div>
-          )}
-
-          {/* DASHBOARD & HISTORY */}
-          {user && appState === AppState.LANDING && (
-            <div className="w-full max-w-5xl mt-24">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-purple-600 p-2 rounded-lg">
-                  <BarChart2 className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold">İstatistikler ve Geçmiş</h3>
+            {/* PRIVACY POLICY PAGE */}
+            {appState === AppState.PRIVACY && (
+              <div className="w-full max-w-4xl mx-auto animate-fade-in">
+                <button
+                  onClick={() => navigateTo('/', AppState.LANDING)}
+                  className="mb-6 text-purple-400 hover:text-purple-300 flex items-center gap-2"
+                >
+                  ← Ana Sayfaya Dön
+                </button>
+                <PrivacyPolicy />
               </div>
+            )}
 
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
-                {/* Stats Cards */}
-                <div className="md:col-span-4 space-y-4">
-                  <div className="bg-gray-800/50 border border-gray-700 p-6 rounded-2xl relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Zap className="w-24 h-24 text-purple-500" />
+            {/* TERMS OF SERVICE PAGE */}
+            {appState === AppState.TERMS && (
+              <div className="w-full max-w-4xl mx-auto animate-fade-in">
+                <button
+                  onClick={() => navigateTo('/', AppState.LANDING)}
+                  className="mb-6 text-purple-400 hover:text-purple-300 flex items-center gap-2"
+                >
+                  ← Ana Sayfaya Dön
+                </button>
+                <TermsOfService />
+              </div>
+            )}
+
+            {/* CONTACT PAGE */}
+            {appState === AppState.CONTACT && (
+              <div className="w-full max-w-4xl mx-auto animate-fade-in">
+                <button
+                  onClick={() => navigateTo('/', AppState.LANDING)}
+                  className="mb-6 text-purple-400 hover:text-purple-300 flex items-center gap-2"
+                >
+                  ← Ana Sayfaya Dön
+                </button>
+                <ContactPage />
+              </div>
+            )}
+
+            {/* DASHBOARD & HISTORY */}
+            {user && appState === AppState.LANDING && (
+              <div className="w-full max-w-5xl mt-24">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="bg-purple-600 p-2 rounded-lg">
+                    <BarChart2 className="w-5 h-5 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold">İstatistikler ve Geçmiş</h3>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
+                  {/* Stats Cards */}
+                  <div className="md:col-span-4 space-y-4">
+                    <div className="bg-gray-800/50 border border-gray-700 p-6 rounded-2xl relative overflow-hidden group">
+                      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <Zap className="w-24 h-24 text-purple-500" />
+                      </div>
+                      <div className="text-gray-400 text-sm font-medium mb-1">Mevcut Bakiye</div>
+                      <div className="text-4xl font-bold text-white mb-2">{user.credits}</div>
+                      <button
+                        onClick={() => setIsPricingOpen(true)}
+                        className="text-sm font-semibold bg-white text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 flex items-center gap-2 mt-4 transition-colors"
+                      >
+                        Kredi Yükle <CheckCircle2 className="w-4 h-4 text-green-600" />
+                      </button>
                     </div>
-                    <div className="text-gray-400 text-sm font-medium mb-1">Mevcut Bakiye</div>
-                    <div className="text-4xl font-bold text-white mb-2">{user.credits}</div>
-                    <button
-                      onClick={() => setIsPricingOpen(true)}
-                      className="text-sm font-semibold bg-white text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 flex items-center gap-2 mt-4 transition-colors"
-                    >
-                      Kredi Yükle <CheckCircle2 className="w-4 h-4 text-green-600" />
-                    </button>
+
+                    {/* Referral Widget */}
+                    <ReferralWidget userId={user.id} />
+
+                    <div className="bg-gray-800/50 border border-gray-700 p-6 rounded-2xl">
+                      <div className="text-gray-400 text-sm font-medium mb-4">Kullanım Özeti</div>
+                      <UsageChart usage={[2, 5, 1, 8, 4, 6, 3]} />
+                    </div>
                   </div>
 
-                  {/* Referral Widget */}
-                  <ReferralWidget userId={user.id} />
-
-                  <div className="bg-gray-800/50 border border-gray-700 p-6 rounded-2xl">
-                    <div className="text-gray-400 text-sm font-medium mb-4">Kullanım Özeti</div>
-                    <UsageChart usage={[2, 5, 1, 8, 4, 6, 3]} />
-                  </div>
-                </div>
-
-                {/* History List */}
-                <div className="md:col-span-8 bg-gray-800/30 border border-gray-700 rounded-2xl p-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <h4 className="font-semibold text-lg flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-gray-400" /> İşlem Geçmişi
-                    </h4>
-                    <span className="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded">Son 10 İşlem</span>
-                  </div>
-
-                  {history.length === 0 ? (
-                    <div className="text-center py-12 text-gray-500 flex flex-col items-center">
-                      <Camera className="w-12 h-12 mb-3 opacity-20" />
-                      <p>Henüz bir fotoğraf düzenlemediniz.</p>
+                  {/* History List */}
+                  <div className="md:col-span-8 bg-gray-800/30 border border-gray-700 rounded-2xl p-6">
+                    <div className="flex justify-between items-center mb-6">
+                      <h4 className="font-semibold text-lg flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-gray-400" /> İşlem Geçmişi
+                      </h4>
+                      <span className="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded">Son 10 İşlem</span>
                     </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {history.map((item) => (
-                        <div key={item.id} className="flex items-center p-3 hover:bg-gray-800/80 bg-gray-800/40 rounded-xl transition-colors border border-transparent hover:border-gray-700 group">
-                          <div className="w-12 h-12 rounded-lg bg-gray-700 flex items-center justify-center shrink-0 overflow-hidden text-gray-500">
-                            <Camera className="w-5 h-5" />
+
+                    {history.length === 0 ? (
+                      <div className="text-center py-12 text-gray-500 flex flex-col items-center">
+                        <Camera className="w-12 h-12 mb-3 opacity-20" />
+                        <p>Henüz bir fotoğraf düzenlemediniz.</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {history.map((item) => (
+                          <div key={item.id} className="flex items-center p-3 hover:bg-gray-800/80 bg-gray-800/40 rounded-xl transition-colors border border-transparent hover:border-gray-700 group">
+                            <div className="w-12 h-12 rounded-lg bg-gray-700 flex items-center justify-center shrink-0 overflow-hidden text-gray-500">
+                              <Camera className="w-5 h-5" />
+                            </div>
+                            <div className="ml-4 flex-1">
+                              <div className="text-sm font-medium text-white">4K AI Upscale</div>
+                              <div className="text-xs text-gray-500">{new Date(item.createdAt).toLocaleDateString('tr-TR', { hour: '2-digit', minute: '2-digit' })}</div>
+                            </div>
+                            <div className="flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                              <span className="text-xs text-green-400">Tamamlandı</span>
+                            </div>
                           </div>
-                          <div className="ml-4 flex-1">
-                            <div className="text-sm font-medium text-white">4K AI Upscale</div>
-                            <div className="text-xs text-gray-500">{new Date(item.createdAt).toLocaleDateString('tr-TR', { hour: '2-digit', minute: '2-digit' })}</div>
-                          </div>
-                          <div className="flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                            <span className="text-xs text-green-400">Tamamlandı</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+
+            {/* Ad Space Bottom */}
+            <AdBanner slotId="bottom-banner" className="mt-12" />
+
+          </main>
+
+          {/* FAQ SECTION (SEO & User Experience) - Only on Landing */}
+          {appState === AppState.LANDING && (
+            <>
+              <div className="bg-gray-900 border-t border-gray-800/50">
+                <HowItWorks />
+              </div>
+              <div className="bg-gray-900 border-t border-gray-800/50">
+                <FeaturesSection />
+              </div>
+              <div className="bg-gray-900/50 border-t border-gray-800">
+                <FaqSection />
+              </div>
+            </>
           )}
 
-          {/* Ad Space Bottom */}
-          <AdBanner slotId="bottom-banner" className="mt-12" />
-
-        </main>
-
-        {/* FAQ SECTION (SEO & User Experience) - Only on Landing */}
-        {appState === AppState.LANDING && (
-          <>
-            <div className="bg-gray-900 border-t border-gray-800/50">
-              <HowItWorks />
-            </div>
-            <div className="bg-gray-900 border-t border-gray-800/50">
-              <FeaturesSection />
-            </div>
-            <div className="bg-gray-900/50 border-t border-gray-800">
-              <FaqSection />
-            </div>
-          </>
-        )}
-
-        <footer className="bg-gray-900 border-t border-gray-800 py-12 mt-12">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
-              <div className="mb-4 md:mb-0">
-                <span className="text-lg font-bold text-white block mb-2">PixelScaleAI</span>
-                <p>&copy; {new Date().getFullYear()} Tüm hakları saklıdır.</p>
-              </div>
-              <div className="flex gap-6">
-                <button onClick={() => navigateTo('/privacy', AppState.PRIVACY)} className="hover:text-purple-400 transition-colors">Gizlilik Politikası</button>
-                <button onClick={() => navigateTo('/terms', AppState.TERMS)} className="hover:text-purple-400 transition-colors">Kullanım Şartları</button>
-                <button onClick={() => navigateTo('/contact', AppState.CONTACT)} className="hover:text-purple-400 transition-colors">İletişim</button>
+          <footer className="bg-gray-900 border-t border-gray-800 py-12 mt-12">
+            <div className="container mx-auto px-4">
+              <div className="flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
+                <div className="mb-4 md:mb-0">
+                  <span className="text-lg font-bold text-white block mb-2">PixelScaleAI</span>
+                  <p>&copy; {new Date().getFullYear()} Tüm hakları saklıdır.</p>
+                </div>
+                <div className="flex gap-6">
+                  <button onClick={() => navigateTo('/privacy', AppState.PRIVACY)} className="hover:text-purple-400 transition-colors">Gizlilik Politikası</button>
+                  <button onClick={() => navigateTo('/terms', AppState.TERMS)} className="hover:text-purple-400 transition-colors">Kullanım Şartları</button>
+                  <button onClick={() => navigateTo('/contact', AppState.CONTACT)} className="hover:text-purple-400 transition-colors">İletişim</button>
+                </div>
               </div>
             </div>
-          </div>
-        </footer>
+          </footer>
 
 
 
-        <PricingModal
-          isOpen={isPricingOpen}
-          onClose={() => setIsPricingOpen(false)}
-          onPurchase={handlePurchase}
-          isLoggedIn={!!user}
-          onLoginRequest={() => setIsAuthModalOpen(true)}
-        />
+          <PricingModal
+            isOpen={isPricingOpen}
+            onClose={() => setIsPricingOpen(false)}
+            onPurchase={handlePurchase}
+            isLoggedIn={!!user}
+            onLoginRequest={() => setIsAuthModalOpen(true)}
+          />
 
-        {/* GLOBAL SUPPORT BUTTON */}
-        <SupportButton onOpenSupportModal={() => setIsSupportModalOpen(true)} />
+          {/* GLOBAL SUPPORT BUTTON */}
+          <SupportButton onOpenSupportModal={() => setIsSupportModalOpen(true)} />
 
-        {/* SUPPORT MODAL */}
-        <SupportModal
-          isOpen={isSupportModalOpen}
-          onClose={() => setIsSupportModalOpen(false)}
-          userEmail={user?.email}
-          isPremium={false}
-        />
+          {/* SUPPORT MODAL */}
+          <SupportModal
+            isOpen={isSupportModalOpen}
+            onClose={() => setIsSupportModalOpen(false)}
+            userEmail={user?.email}
+            isPremium={false}
+          />
 
-        {/* COOKIE CONSENT BANNER */}
-        <CookieBanner />
+          {/* COOKIE CONSENT BANNER */}
+          <CookieBanner />
 
-        {/* HISTORY MODAL */}
-        <HistoryModal
-          isOpen={isHistoryModalOpen}
-          onClose={() => setIsHistoryModalOpen(false)}
-          userId={user?.id}
-        />
+          {/* HISTORY MODAL */}
+          <HistoryModal
+            isOpen={isHistoryModalOpen}
+            onClose={() => setIsHistoryModalOpen(false)}
+            userId={user?.id}
+          />
+        </div>
       </div>
     </HelmetProvider>
   );

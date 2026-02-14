@@ -102,14 +102,18 @@ const UpscaleOptionsPanel: React.FC<UpscaleOptionsPanelProps> = ({
                         <button
                             key={preset}
                             onClick={() => handlePresetChange(preset as QualityPreset)}
-                            className={`p-3 rounded-lg transition-all text-center ${currentPreset === preset
-                                ? 'bg-purple-600/20 border-2 border-purple-500 text-white'
-                                : 'bg-gray-700/50 border border-gray-700 text-gray-300 hover:bg-gray-700'
+                            className={`p-3 rounded-lg transition-all text-center group relative overflow-hidden ${currentPreset === preset
+                                ? 'bg-purple-600/20 border-2 border-purple-500 text-white shadow-[0_0_20px_-5px_rgba(168,85,247,0.3)]'
+                                : 'bg-gray-700/50 border border-gray-700 text-gray-300 hover:bg-gray-700/80 hover:border-gray-600'
                                 }`}
                         >
-                            <span className="text-xl block mb-1">{info.icon}</span>
+                            <span className="text-xl block mb-1 transform group-hover:scale-110 transition-transform duration-300">{info.icon}</span>
                             <span className="font-medium text-sm block">{info.name}</span>
-                            <span className="text-[10px] text-gray-400 block">{info.description}</span>
+                            <span className="text-[10px] text-gray-400 block leading-tight mt-1 opacity-80">
+                                {preset === 'ANIME'
+                                    ? "Çizimler için özel hat koruma. Pürüzsüzleştirir."
+                                    : info.description}
+                            </span>
                         </button>
                     ))}
                 </div>
