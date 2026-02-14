@@ -562,25 +562,25 @@ const App: React.FC = () => {
 
           {/* FAQ SECTION (SEO & User Experience) - Only on Landing */}
           {appState === AppState.LANDING && (
-            <>
-              <div className="bg-gray-900 border-t border-gray-800/50">
+            <div className="w-full space-y-12">
+              <div className="border-t border-white/5 bg-black/20 backdrop-blur-sm">
                 <HowItWorks />
               </div>
-              <div className="bg-gray-900 border-t border-gray-800/50">
+              <div className="border-t border-white/5 bg-black/20 backdrop-blur-sm">
                 <FeaturesSection />
               </div>
-              <div className="bg-gray-900/50 border-t border-gray-800">
+              <div className="border-t border-white/5 bg-black/20 backdrop-blur-sm">
                 <FaqSection />
               </div>
-            </>
+            </div>
           )}
 
-          <footer className="bg-gray-900 border-t border-gray-800 py-12 mt-12">
+          <footer className="w-full border-t border-white/10 bg-[#020205] py-12 mt-12 relative z-10">
             <div className="container mx-auto px-4">
               <div className="flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
                 <div className="mb-4 md:mb-0">
-                  <span className="text-lg font-bold text-white block mb-2">PixelScaleAI</span>
-                  <p>&copy; {new Date().getFullYear()} Tüm hakları saklıdır.</p>
+                  <span className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600 block mb-2">PixelScaleAI</span>
+                  <p className="opacity-60">&copy; {new Date().getFullYear()} Tüm hakları saklıdır.</p>
                 </div>
                 <div className="flex gap-6">
                   <button onClick={() => navigateTo('/privacy', AppState.PRIVACY)} className="hover:text-purple-400 transition-colors">Gizlilik Politikası</button>
