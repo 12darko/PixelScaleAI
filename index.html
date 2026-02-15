@@ -4,39 +4,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PixelScaleAI - 4K AI Fotoğraf Netleştirme ve Yükseltme</title>
-  <!-- AI Libraries (Local) to avoid CORS/CDN issues -->
-  <script src="/js/tf.min.js"></script>
-  <script src="/js/upscaler.min.js"></script>
+  <title>PixelScaleAI - 4K AI Fotoğraf Netleştirme</title>
+
+  <!-- Preconnect to important origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- AI Libraries (Locally hosted) - Defer to prevent render blocking -->
+  <script src="/js/tf.min.js" defer></script>
+  <script src="/js/upscaler.min.js" defer></script>
+
   <meta name="description"
     content="Bulanık fotoğraflarınızı yapay zeka ile 4K/8K kalitesine yükseltin. PixelScaleAI ile saniyeler içinde net, canlı ve profesyonel görseller elde edin." />
   <link rel="canonical" href="https://pixelscaleai.com/" />
-  <meta name="keywords" content="ai upscaler, fotoğraf netleştirme, görsel yükseltme, 4k yapma, pixelscaleai" />
   <meta name="theme-color" content="#581c87" />
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://pixelscaleai.com/" />
-  <meta property="og:title" content="PixelScaleAI - 4K Görüntü İyileştirme" />
-  <meta property="og:description"
-    content="Bulanık fotoğraflarınızı yapay zeka ile 4K/8K kalitesine yükseltin. PixelScaleAI ile saniyeler içinde net, canlı ve profesyonel görseller elde edin." />
-  <meta property="og:image" content="/icon.svg" />
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://pixelscaleai.com/" />
-  <meta property="twitter:title" content="PixelScaleAI - 4K Görüntü İyileştirme" />
-  <meta property="twitter:description"
-    content="Bulanık fotoğraflarınızı yapay zeka ile 4K/8K kalitesine yükseltin. PixelScaleAI ile saniyeler içinde net, canlı ve profesyonel görseller elde edin." />
-  <meta property="twitter:image" content="/icon.svg" />
 
   <link rel="icon" type="image/svg+xml" href="/icon.svg" />
   <link rel="apple-touch-icon" href="/icon.svg" />
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Outfit', 'Inter', sans-serif;
     }
 
     /* Custom scrollbar for webkit */
@@ -45,46 +38,36 @@
     }
 
     ::-webkit-scrollbar-track {
-      background: #1f2937;
+      background: #050505;
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #4b5563;
+      background: #333;
       border-radius: 4px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: #6b7280;
+      background: #444;
     }
   </style>
 
-  <!-- Google Analytics 4 (Replace GA_MEASUREMENT_ID with your actual ID) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'GA_MEASUREMENT_ID');
-  </script>
-
-  <!-- Google AdSense (Replace YOUR_ADSENSE_ID with your actual client ID) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID"
-    crossorigin="anonymous"></script>
+  <!-- Google Analytics / Adsense scripts should be here if real ID provided -->
   <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0"
+  {
+    "imports": {
+      "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+      "react/": "https://aistudiocdn.com/react@^19.2.1/",
+      "react": "https://aistudiocdn.com/react@^19.2.1",
+      "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+      "react-helmet-async": "https://esm.sh/react-helmet-async@2.0.4",
+      "framer-motion": "https://esm.sh/framer-motion@10.16.4"
+    }
   }
-}
-</script>
+  </script>
   <link rel="stylesheet" href="/index.css">
 </head>
 
-<body class="bg-gray-900 text-white min-h-screen">
+<body class="bg-[#050505] text-white min-h-screen antialiased">
   <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
